@@ -1,0 +1,28 @@
+// Air Pollution Monitoring System using MQ135 Gas Sensor
+
+const int sensorPin = A0; // Analog input pin for the MQ135 sensor
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  float sensorValue = analogRead(sensorPin);
+  
+  // Define the reference resistance (Rs) of the sensor for calibration
+  float Rs = (1023.0 / sensorValue) - 1.0;
+  
+  // Define the resistance ratio for CO2
+  const float CO2Ratio = 3.3; // Replace with the appropriate value for your sensor
+  
+  // Calculate the concentration of CO2 in ppm (parts per million)
+  float CO2_ppm = pow(10, ((log10(Rs / CO2Ratio) - 0.654) / -0.392));
+
+  // Print the CO2 concentration in ppm to the serial monitor
+  Serial.print("CO2 Concentration (ppm): ");
+  Serial.println(CO2_ppm);
+  
+  // You can add similar calculations for other gases if your sensor supports it
+  
+  delay(2000); // Adjust the delay based on your requirements
+}
