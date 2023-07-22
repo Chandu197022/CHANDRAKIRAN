@@ -1,1 +1,54 @@
+// Smart Parking System using Ultrasonic Sensors
+// Two ultrasonic sensors are used to detect parking space occupancy
 
+const int trigPin1 = 2; // Trigger pin for sensor 1
+const int echoPin1 = 3; // Echo pin for sensor 1
+const int trigPin2 = 4; // Trigger pin for sensor 2
+const int echoPin2 = 5; // Echo pin for sensor 2
+
+const int parkingThreshold = 20; // Adjust this threshold based on your parking spot size
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(trigPin1, OUTPUT);
+  pinMode(echoPin1, INPUT);
+  pinMode(trigPin2, OUTPUT);
+  pinMode(echoPin2, INPUT);
+}
+
+void loop() {
+  long duration1, distance1, duration2, distance2;
+
+  // Measure distance for sensor 1
+  digitalWrite(trigPin1, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin1, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin1, LOW);
+  duration1 = pulseIn(echoPin1, HIGH);
+  distance1 = duration1 * 0.034 / 2;
+
+  // Measure distance for sensor 2
+  digitalWrite(trigPin2, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin2, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin2, LOW);
+  duration2 = pulseIn(echoPin2, HIGH);
+  distance2 = duration2 * 0.034 / 2;
+
+  // Check if parking spaces are available
+  if (distance1 > parkingThreshold) {
+    Serial.println("Parking space 1 is available.");
+  } else {
+    Serial.println("Parking space 1 is occupied.");
+  }
+
+  if (distance2 > parkingThreshold) {
+    Serial.println("Parking space 2 is available.");
+  } else {
+    Serial.println("Parking space 2 is occupied.");
+  }
+
+  delay(1000); // Adjust the delay based on your requirements
+}
