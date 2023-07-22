@@ -1,0 +1,31 @@
+// Health Monitoring System using Pulse Sensor and LM35 Temperature Sensor
+
+const int pulseSensorPin = A0; // Analog input pin for the pulse sensor
+const int temperatureSensorPin = A1; // Analog input pin for the LM35 temperature sensor
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  // Read pulse sensor data
+  int pulseValue = analogRead(pulseSensorPin);
+  
+  // Read LM35 temperature sensor data
+  int tempRawValue = analogRead(temperatureSensorPin);
+  float temperatureCelsius = (tempRawValue * 5.0) / 1024.0 * 100.0;
+  
+  // Calculate heart rate (BPM) based on pulse sensor data
+  // You may need to calibrate this calculation based on your specific pulse sensor
+  int heartRate = map(pulseValue, 0, 1023, 40, 200);
+  
+  // Print heart rate and body temperature to the serial monitor
+  Serial.print("Heart Rate (BPM): ");
+  Serial.println(heartRate);
+  Serial.print("Body Temperature (°C): ");
+  Serial.println(temperatureCelsius);
+  
+  // Add additional code to send this data to a display unit or a central server if needed
+  
+  delay(2000); // Adjust the delay based on your requirements
+}
